@@ -1,2 +1,9 @@
-const userName: string = "John Doe!";
-console.log("Hello World" + userName);
+import { Server } from "./presentation/server";
+
+function main() {
+  Server.start();
+}
+
+(() => {
+  main();
+})();
