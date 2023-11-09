@@ -13,7 +13,7 @@ export class CheckService implements CheckServiceUseCae {
       console.log(`Check service ${url} is ok`);
       return true;
     } catch (error) {
-      console.error(error);
+      console.log(error);
       return false;
     }
   }
