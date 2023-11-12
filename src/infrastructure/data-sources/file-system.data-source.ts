@@ -46,7 +46,7 @@ export class FileSystemDataSource implements LogDataSource {
   }
 
   private getLogMessage(log: LogEntity): string {
-    return `[${log.createdAt.toISOString()}] [${log.level}] ${log.message}\n`;
+    return LogEntity.toString(log);
   }
 
   createLog(log: LogEntity): Promise<void> {
@@ -61,7 +61,37 @@ export class FileSystemDataSource implements LogDataSource {
       });
     });
   }
+
+  private getLogsFromFile(path: string): Promise<LogEntity[]> {
+    return new Promise((resolve, reject) => {
+      fs.readFile(path, (err, data) => {
+        if (err) {
+          reject(err);
+        }
+        const logs = data
+          .toString()
+          .split("\n")
+          .filter((log) => log !== "" && LogEntity.getLogMatch(log) !== null)
+          .map((log) => {
+            return LogEntity.fromString(log);
+          });
+        resolve(logs);
+      });
+    });
+  }
+
   getLogs(severityLevel: LogSeverityLevel): Promise<LogEntity[]> {
-    throw new Error("Method not implemented.");
+    switch (severityLevel) {
+      case LogSeverityLevel.low:
+        return this.getLogsFromFile(this.lowLogsPath);
+      case LogSeverityLevel.medium:
+        return this.getLogsFromFile(this.mediumLogsPath);
+      case LogSeverityLevel.high:
+        return this.getLogsFromFile(this.highLogsPath);
+      case LogSeverityLevel.critical:
+        return this.getLogsFromFile(this.criticalLogsPath);
+      default:
+        throw new Error("Invalid severity level: " + severityLevel);
+    }
   }
 }
