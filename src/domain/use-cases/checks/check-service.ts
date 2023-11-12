@@ -11,8 +11,8 @@ type ErrorCallback = (error: string) => void;
 export class CheckService implements CheckServiceUseCae {
   constructor(
     private readonly logRepository: LogRepository,
-    private readonly successCallback: SuccessCallback,
-    private readonly errorCallback: ErrorCallback
+    private readonly successCallback?: SuccessCallback,
+    private readonly errorCallback?: ErrorCallback
   ) {}
 
   async execute(url: string): Promise<boolean> {
@@ -27,13 +27,17 @@ export class CheckService implements CheckServiceUseCae {
       this.logRepository.createLog(
         new LogEntity(`Service ${url} is ok`, LogSeverityLevel.low)
       );
-      this.successCallback();
+      if (this.successCallback) {
+        this.successCallback();
+      }
       return true;
     } catch (error) {
       this.logRepository.createLog(
         new LogEntity(`Error on check service ${url}`, LogSeverityLevel.high)
       );
-      this.errorCallback(`${error}`);
+      if (this.errorCallback) {
+        this.errorCallback(`${error}`);
+      }
       return false;
     }
   }

@@ -3,7 +3,9 @@ import { FileSystemDataSource } from "../infrastructure/data-sources/file-system
 import { LogRepositoryImpl } from "../infrastructure/repositories/log.repository.impl";
 import { CronService } from "./cron/cron-service";
 
-const fileSystemLogRepository = new LogRepositoryImpl(new FileSystemDataSource());
+const fileSystemLogRepository = new LogRepositoryImpl(
+  new FileSystemDataSource()
+);
 
 export class Server {
   public static start(): void {
@@ -11,11 +13,7 @@ export class Server {
 
     CronService.createJob("*/5 * * * * *", () => {
       const url = "http://localhost:3000/";
-      new CheckService(
-        fileSystemLogRepository,
-        () => console.log(`${url} is ok`),
-        (error) => console.log(error)
-      ).execute(url);
+      new CheckService(fileSystemLogRepository).execute(url);
     });
   }
 }
