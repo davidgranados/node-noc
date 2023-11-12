@@ -32,8 +32,34 @@ export class FileSystemDataSource implements LogDataSource {
     });
   }
 
+  private getLogPath(level: LogSeverityLevel): string {
+    switch (level) {
+      case LogSeverityLevel.low:
+        return this.lowLogsPath;
+      case LogSeverityLevel.medium:
+        return this.mediumLogsPath;
+      case LogSeverityLevel.high:
+        return this.highLogsPath;
+      case LogSeverityLevel.critical:
+        return this.criticalLogsPath;
+    }
+  }
+
+  private getLogMessage(log: LogEntity): string {
+    return `[${log.createdAt.toISOString()}] [${log.level}] ${log.message}\n`;
+  }
+
   createLog(log: LogEntity): Promise<void> {
-    throw new Error("Method not implemented.");
+    const logPath = this.getLogPath(log.level);
+    const logMessage = this.getLogMessage(log);
+    return new Promise((resolve, reject) => {
+      fs.appendFile(logPath, logMessage, (err) => {
+        if (err) {
+          reject(err);
+        }
+        resolve();
+      });
+    });
   }
   getLogs(severityLevel: LogSeverityLevel): Promise<LogEntity[]> {
     throw new Error("Method not implemented.");
