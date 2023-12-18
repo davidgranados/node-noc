@@ -17,11 +17,7 @@ export class Server {
       new CheckService(fileSystemLogRepository).execute(url);
     });
 
-    const emailService = new EmailService();
-    emailService.sendEmail({
-      to: "davidgranados73@gmail.com",
-      subject: "Hello",
-      htmlBody: "<h1>Hello</h1>",
-    });
+    const emailService = new EmailService(fileSystemLogRepository);
+    // emailService.sendEmailWithFileSystemLogs(["davidgranados73@gmail.com"]);
   }
 }
