@@ -13,3 +13,7 @@ MAILER_SECRET_KEY=
 
 APP_ENV="dev"
 ```
+
+3. Ejecutar `npm install`
+
+4. Ejecutar `npm run dev`

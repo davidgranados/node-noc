@@ -8,6 +8,8 @@ interface CheckServiceUseCae {
 type SuccessCallback = () => void;
 type ErrorCallback = (error: string) => void;
 
+const filename = "/src" + __filename.split("/src").slice(-1)[0];
+
 export class CheckService implements CheckServiceUseCae {
   constructor(
     private readonly logRepository: LogRepository,
@@ -21,11 +23,19 @@ export class CheckService implements CheckServiceUseCae {
 
       if (!response.ok) {
         this.logRepository.createLog(
-          new LogEntity(`Error on check service ${url}`, LogSeverityLevel.high)
+          new LogEntity({
+            message: `Error on check service ${url}`,
+            level: LogSeverityLevel.high,
+            origin: filename,
+          })
         );
       }
       this.logRepository.createLog(
-        new LogEntity(`Service ${url} is ok`, LogSeverityLevel.low)
+        new LogEntity({
+          message: `Service ${url} is ok`,
+          level: LogSeverityLevel.low,
+          origin: filename,
+        })
       );
       if (this.successCallback) {
         this.successCallback();
@@ -33,7 +43,11 @@ export class CheckService implements CheckServiceUseCae {
       return true;
     } catch (error) {
       this.logRepository.createLog(
-        new LogEntity(`Error on check service ${url}`, LogSeverityLevel.high)
+        new LogEntity({
+          message: `Error on check service ${url}`,
+          level: LogSeverityLevel.high,
+          origin: filename,
+        })
       );
       if (this.errorCallback) {
         this.errorCallback(`${error}`);
