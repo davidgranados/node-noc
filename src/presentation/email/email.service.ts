@@ -27,7 +27,7 @@ export class EmailService {
     },
   });
 
-  constructor(private readonly logRepository: LogRepository) {}
+  constructor() {}
 
   async sendEmail(options: SendMailOptions) {
     const mailOptions = {
@@ -40,25 +40,13 @@ export class EmailService {
 
     try {
       await this.transporter.sendMail(mailOptions);
-      const log = new LogEntity({
-        level: LogSeverityLevel.low,
-        message: `Email sent to ${options.to}`,
-        origin: filename,
-      });
-      this.logRepository.createLog(log);
       return true;
     } catch (error) {
-      const log = new LogEntity({
-        level: LogSeverityLevel.high,
-        message: `Error sending email to ${options.to}`,
-        origin: filename,
-      });
-      this.logRepository.createLog(log);
       return false;
     }
   }
 
-  sendEmailWithFileSystemLogs(to: SendMailOptions["to"]) {
+  async sendEmailWithFileSystemLogs(to: SendMailOptions["to"]) {
     const mailOptions = {
       from: envs.MAILER_EMAIL,
       to: to,
@@ -72,7 +60,7 @@ export class EmailService {
       ],
     };
 
-    this.sendEmail(mailOptions);
+    return await this.sendEmail(mailOptions);
   }
 
 }
