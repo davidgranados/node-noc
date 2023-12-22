@@ -16,4 +16,9 @@ APP_ENV="dev"
 
 3. Ejecutar `npm install`
 
-4. Ejecutar `npm run dev`
+5. Levantar las bases de datos con el comando
+    ```
+    docker-compose up -d
+    ```
+
+5. Ejecutar `npm run dev`
