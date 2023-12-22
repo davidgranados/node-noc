@@ -9,8 +9,8 @@ export class MongoDatabase {
   static async connect(options: ConnectionOptions): Promise<void> {
     const { mongoUrl, dbName } = options;
     await mongoose.connect(mongoUrl, {
-      dbName
+      dbName,
     });
-    console.log("MongoDB connected")
+    console.log("MongoDB connected");
   }
 }
