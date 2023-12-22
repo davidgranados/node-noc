@@ -1,4 +1,5 @@
 import { EmailService } from "../../presentation/email/email.service";
+import { getCurrentFilename } from "../../utils";
 import { LogEntity, LogSeverityLevel } from "../entities/log.entity";
 import { LogRepository } from "../repository/log.repository";
 
@@ -6,7 +7,7 @@ interface SendLogsEmailUseCase {
   execute(to: string | string[]): Promise<boolean>;
 }
 
-const filename = "/src" + __filename.split("/src").slice(-1)[0];
+const filename = getCurrentFilename(__filename);
 
 export class SendLogsEmail implements SendLogsEmailUseCase {
   constructor(

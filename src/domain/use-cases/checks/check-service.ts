@@ -1,5 +1,6 @@
 import { LogEntity, LogSeverityLevel } from "../../entities/log.entity";
 import { LogRepository } from "../../repository/log.repository";
+import { getCurrentFilename } from "../../../utils";
 
 interface CheckServiceUseCae {
   execute(url: string): Promise<boolean>;
@@ -8,7 +9,7 @@ interface CheckServiceUseCae {
 type SuccessCallback = () => void;
 type ErrorCallback = (error: string) => void;
 
-const filename = "/src" + __filename.split("/src").slice(-1)[0];
+const filename = getCurrentFilename(__filename);
 
 export class CheckService implements CheckServiceUseCae {
   constructor(

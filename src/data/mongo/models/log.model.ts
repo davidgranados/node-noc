@@ -12,4 +12,4 @@ const logSchema = new mongoose.Schema({
   createdAt: { type: Date, default: new Date() },
 });
 
-export const LogModal = mongoose.model("Log", logSchema);
+export const LogModel = mongoose.model("Log", logSchema);
