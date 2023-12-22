@@ -8,6 +8,6 @@ services:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
     volumes:
-      - ./mongo:/data/db
+      - ./db-data/mongo:/data/db
     ports:
       - 27017:27017
