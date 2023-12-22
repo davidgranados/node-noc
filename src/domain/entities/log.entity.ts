@@ -58,4 +58,13 @@ export class LogEntity {
       origin: log.origin,
     });
   }
+
+  static fromObject = (object: { [key: string]: any }): LogEntity => {
+    return new LogEntity({
+      message: object.message,
+      level: object.level,
+      createdAt: new Date(object.createdAt),
+      origin: object.origin,
+    });
+  }
 }
