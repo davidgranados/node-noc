@@ -6,5 +6,9 @@ logs
 .log
 
 .env
+.env.test
+
+db-data-test
+coverage
 
 db-data

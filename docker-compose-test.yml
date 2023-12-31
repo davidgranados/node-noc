@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  mongo-db-test:
+    image: mongo:6.0.6
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+    volumes:
+      - ./db-data-test/mongo:/data/db
+    ports:
+      - 27017:27017
+  postgres-db-test:
+    image: postgres:15.3
+    restart: always
+    environment:
+      POSTGRES_DB: NOC
+      POSTGRES_PASSWORD: admin
+    volumes:
+      - ./db-data-test/postgres:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
