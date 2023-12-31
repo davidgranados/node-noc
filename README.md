@@ -21,4 +21,6 @@ APP_ENV="dev"
     docker-compose up -d
     ```
 
-5. Ejecutar `npm run dev`
+6. Ejecuta `npx prisma migrate dev`
+
+7. Ejecutar `npm run dev`
