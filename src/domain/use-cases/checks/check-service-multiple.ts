@@ -2,7 +2,7 @@ import { LogEntity, LogSeverityLevel } from "../../entities/log.entity";
 import { LogRepository } from "../../repository/log.repository";
 import { getCurrentFilename } from "../../../utils";
 
-interface CheckServiceUseCase {
+interface CheckServiceMultipleUseCase {
   execute(url: string): Promise<boolean>;
 }
 
@@ -11,19 +11,25 @@ type ErrorCallback = (error: string) => void;
 
 const filename = getCurrentFilename(__filename);
 
-export class CheckService implements CheckServiceUseCase {
+export class CheckServiceMultiple implements CheckServiceMultipleUseCase {
   constructor(
-    private readonly logRepository: LogRepository,
+    private readonly logRepository: LogRepository[],
     private readonly successCallback?: SuccessCallback,
     private readonly errorCallback?: ErrorCallback
   ) {}
+
+  private createLogs(log: LogEntity) {
+    this.logRepository.forEach((logRepository) => {
+      logRepository.createLog(log);
+    });
+  }
 
   async execute(url: string): Promise<boolean> {
     try {
       const response = await fetch(url);
 
       if (!response.ok) {
-        this.logRepository.createLog(
+        this.createLogs(
           new LogEntity({
             message: `Error on check service ${url}`,
             level: LogSeverityLevel.high,
@@ -31,7 +37,7 @@ export class CheckService implements CheckServiceUseCase {
           })
         );
       }
-      this.logRepository.createLog(
+      this.createLogs(
         new LogEntity({
           message: `Service ${url} is ok`,
           level: LogSeverityLevel.low,
@@ -43,7 +49,7 @@ export class CheckService implements CheckServiceUseCase {
       }
       return true;
     } catch (error) {
-      this.logRepository.createLog(
+      this.createLogs(
         new LogEntity({
           message: `Error on check service ${url}`,
           level: LogSeverityLevel.high,
