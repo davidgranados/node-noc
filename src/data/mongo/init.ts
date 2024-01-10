@@ -13,4 +13,9 @@ export class MongoDatabase {
     });
     return true;
   }
+
+  static async disconnect(): Promise<boolean> {
+    await mongoose.disconnect();
+    return true;
+  }
 }
