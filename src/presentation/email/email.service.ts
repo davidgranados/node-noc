@@ -2,7 +2,7 @@ import nodemailer from 'nodemailer';
 
 import { envs } from '../../config/plugins/envs.plugins';
 
-interface attachments {
+interface Attachments {
   filename: string;
   path: string;
 }
@@ -11,7 +11,7 @@ interface SendMailOptions {
   to: string | string[];
   subject: string;
   htmlBody: string;
-  attachments?: attachments[];
+  attachments?: Attachments[];
 }
 
 export class EmailService {
@@ -23,15 +23,13 @@ export class EmailService {
     },
   });
 
-  constructor() {}
-
   async sendEmail(options: SendMailOptions) {
     const mailOptions = {
       from: envs.MAILER_EMAIL,
       to: options.to,
       subject: options.subject,
       html: options.htmlBody,
-      attachments: options.attachments || [],
+      attachments: options.attachments ?? [],
     };
 
     try {

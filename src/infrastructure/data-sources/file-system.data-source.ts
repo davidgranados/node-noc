@@ -3,12 +3,20 @@ import fs from "fs";
 import { LogDataSource } from "../../domain/data-sources/log.datasource";
 import { LogEntity, LogSeverityLevel } from "../../domain/entities/log.entity";
 
+export const FILE_SYSTEM_LOGS_PATHS = {
+  root: "logs/",
+  low: "logs/logs-low.log",
+  medium: "logs/logs-medium.log",
+  high: "logs/logs-high.log",
+  critical: "logs/logs-critical.log",
+};
+
 export class FileSystemDataSource implements LogDataSource {
-  private readonly logsPath = "logs/";
-  private readonly lowLogsPath = "logs/logs-low.log";
-  private readonly mediumLogsPath = "logs/logs-medium.log";
-  private readonly highLogsPath = "logs/logs-high.log";
-  private readonly criticalLogsPath = "logs/logs-critical.log";
+  private readonly logsPath = FILE_SYSTEM_LOGS_PATHS.root;
+  private readonly lowLogsPath = FILE_SYSTEM_LOGS_PATHS.low;
+  private readonly mediumLogsPath = FILE_SYSTEM_LOGS_PATHS.medium;
+  private readonly highLogsPath = FILE_SYSTEM_LOGS_PATHS.high;
+  private readonly criticalLogsPath = FILE_SYSTEM_LOGS_PATHS.critical;
 
   constructor() {
     this.createLogsFiles();
